@@ -32,6 +32,7 @@ outputs/*/*
 !outputs/*/.gitkeep
 
 # Lightweight web/report artifacts may be committed for Streamlit Cloud.
+!app/assets/*.geojson
 !outputs/maps/*.png
 !outputs/figures/*.png
 !outputs/tables/*.csv

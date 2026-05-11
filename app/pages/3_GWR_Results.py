@@ -47,6 +47,38 @@ lgas = load_vector(str(LGAS_PATH))
 
 # ── Check if GWR has been run ─────────────────────────────────────────────────
 if not gwr_gpkg.exists() and not ndvi_coef.exists():
+    web_maps = [
+        pp("outputs/maps/gwr_local_r2_{y}.png", y=year),
+        pp("outputs/maps/gwr_coef_ndvi_{y}.png", y=year),
+        pp("outputs/maps/gwr_coef_ndbi_{y}.png", y=year),
+        pp("outputs/maps/gwr_coef_built_up_density_{y}.png", y=year),
+    ]
+    web_maps = [path for path in web_maps if path.exists()]
+    web_tables = {
+        "Global OLS coefficients": pp("outputs/tables/gwr_global_ols_coefficients_{y}.csv", y=year),
+        "Input correlations": pp("outputs/tables/gwr_input_correlations_{y}.csv", y=year),
+        "VIF diagnostics": pp("outputs/tables/gwr_input_vif_{y}.csv", y=year),
+    }
+    if web_maps or any(path.exists() for path in web_tables.values()):
+        st.markdown("---")
+        st.info("Cloud display is using committed GWR PNG/CSV outputs. Local GeoPackage/raster exploration is available in the full desktop project.")
+        if web_maps:
+            st.subheader("GWR Cartographic Outputs")
+            cols = st.columns(2)
+            for idx, map_path in enumerate(web_maps):
+                with cols[idx % 2]:
+                    st.image(str(map_path), caption=str(map_path.relative_to(PROJECT_ROOT)), use_container_width=True)
+        st.markdown("---")
+        st.subheader("GWR Diagnostic Tables")
+        for label, path in web_tables.items():
+            df = load_csv(str(path))
+            with st.expander(label, expanded=True):
+                if df is not None:
+                    st.dataframe(df, use_container_width=True, hide_index=True)
+                else:
+                    st.info(f"{path.name} is not available.")
+        st.stop()
+
     st.markdown("---")
     no_data(
         f"gwr_results_{year}.gpkg",

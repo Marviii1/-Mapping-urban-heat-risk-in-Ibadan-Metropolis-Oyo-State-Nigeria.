@@ -33,6 +33,20 @@ arr, profile, bounds = load_raster(str(lst_path))
 lgas = load_vector(str(LGAS_PATH))
 
 if arr is None:
+    png_path = pp("outputs/maps/lst_{y}.png", y=year)
+    table_path = pp("outputs/tables/lga_lst_summary_{y}.csv", y=year)
+    if png_path.exists():
+        st.markdown("---")
+        st.subheader(f"Land Surface Temperature Map - {year}")
+        st.image(str(png_path), caption=str(png_path.relative_to(PROJECT_ROOT)), use_container_width=True)
+        lst_table = load_csv(str(table_path))
+        if lst_table is not None:
+            st.markdown("---")
+            st.subheader(f"LGA LST Summary - {year}")
+            st.dataframe(lst_table, use_container_width=True, hide_index=True)
+        st.info("Cloud display is using committed PNG/CSV outputs. Full raster exploration is available when processed GeoTIFFs exist locally.")
+        st.stop()
+
     st.markdown("---")
     no_data(
         f"lst_ibadan_{year}_celsius.tif",

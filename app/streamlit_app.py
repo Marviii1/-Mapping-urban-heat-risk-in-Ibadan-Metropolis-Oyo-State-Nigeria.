@@ -64,10 +64,15 @@ st.markdown(
     unsafe_allow_html=True,
 )
 if lgas is None:
-    st.info(
-        "Study-area GeoPackage not found. Run "
-        "`python scripts/01_prepare_study_area.py --boundary data/raw/boundary/nigeria_lgas.shp`."
-    )
+    fallback_map = pp("outputs/maps/lst_{y}.png", y=year)
+    if fallback_map.exists():
+        st.info("Interactive boundary data is not packaged in this cloud deployment, so the home page is showing a committed cartographic output instead.")
+        st.image(str(fallback_map), caption=str(fallback_map.relative_to(PROJECT_ROOT)), use_container_width=True)
+    else:
+        st.info(
+            "Study-area web boundary not found. Add `app/assets/ibadan_lgas.geojson` "
+            "or commit generated PNG maps under `outputs/maps/`."
+        )
 else:
     render_interactive_lga_map(lgas, height=650)
 
@@ -98,6 +103,8 @@ for col, (label, path, description) in zip(artifact_cols, artifact_cards):
 st.markdown("---")
 with st.expander("LGA Inventory", expanded=False):
     lga_table = load_csv(str(PROJECT_ROOT / "data/processed/tables/ibadan_lga_list.csv"))
+    if lga_table is None:
+        lga_table = load_csv(str(PROJECT_ROOT / f"outputs/tables/lga_lst_summary_{year}.csv"))
     if lga_table is None:
         st.info("LGA table not found yet.")
     else:

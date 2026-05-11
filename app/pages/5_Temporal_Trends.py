@@ -54,7 +54,7 @@ VAR_CMAPS = {
 
 available_years = [
     y for y in YEARS
-    if pp(VAR_PATHS[variable], y=y).exists()
+    if pp(VAR_PATHS[variable], y=y).exists() or (PROJECT_ROOT / f"outputs/maps/{variable}_{y}.png").exists()
 ]
 
 temporal_dir = PROJECT_ROOT / "data/processed/temporal"
@@ -63,6 +63,35 @@ maps_dir     = PROJECT_ROOT / "outputs/maps"
 
 # ── Check data available ──────────────────────────────────────────────────────
 if len(available_years) < 2:
+    web_change_maps = sorted((PROJECT_ROOT / "outputs/maps").glob(f"{variable}_change_*.png"))
+    if web_change_maps:
+        st.markdown("---")
+        st.info("Cloud display is using committed temporal PNG/CSV outputs. Full raster trend computation is available in the local project.")
+        tabs = st.tabs(["Change Maps", "Trend Direction", "LGA Summary"])
+        with tabs[0]:
+            cols = st.columns(2)
+            for idx, map_path in enumerate(web_change_maps):
+                with cols[idx % 2]:
+                    st.image(str(map_path), caption=str(map_path.relative_to(PROJECT_ROOT)), use_container_width=True)
+        with tabs[1]:
+            trend_maps = [
+                PROJECT_ROOT / f"outputs/maps/{variable}_trend_tau.png",
+                PROJECT_ROOT / f"outputs/maps/{variable}_trend_slope_per_year.png",
+            ]
+            trend_maps = [path for path in trend_maps if path.exists()]
+            cols = st.columns(2)
+            for idx, map_path in enumerate(trend_maps):
+                with cols[idx % 2]:
+                    st.image(str(map_path), caption=str(map_path.relative_to(PROJECT_ROOT)), use_container_width=True)
+        with tabs[2]:
+            table_path = PROJECT_ROOT / f"outputs/tables/temporal_lga_summary_{variable}.csv"
+            df = load_csv(str(table_path))
+            if df is not None:
+                st.dataframe(df, use_container_width=True, hide_index=True)
+            else:
+                st.info(f"{table_path.name} is not available.")
+        st.stop()
+
     st.markdown("---")
     st.warning(
         f"Only **{len(available_years)} year(s)** of `{variable}` data found. "
@@ -94,9 +123,13 @@ with tab_years:
     all_arrays = {}
     for col, yr in zip(cols, available_years):
         with col:
+            png_path = PROJECT_ROOT / f"outputs/maps/{variable}_{yr}.png"
             arr, prof, _ = load_raster(str(pp(VAR_PATHS[variable], y=yr)))
             if arr is None:
-                st.warning(f"{yr}: not found")
+                if png_path.exists():
+                    st.image(str(png_path), caption=str(png_path.relative_to(PROJECT_ROOT)), use_container_width=True)
+                else:
+                    st.warning(f"{yr}: not found")
                 continue
             all_arrays[yr] = (arr, prof)
             fig = render_raster_map(
@@ -122,7 +155,8 @@ with tab_change:
     change_maps_found = []
     for y_early, y_late in change_pairs:
         path = temporal_dir / f"{variable}_change_{y_early}_{y_late}.tif"
-        if path.exists():
+        png_path = maps_dir / f"{variable}_change_{y_early}_{y_late}.png"
+        if path.exists() or png_path.exists():
             change_maps_found.append((y_early, y_late, path))
 
     if not change_maps_found:
@@ -136,19 +170,22 @@ with tab_change:
         for col, (y_early, y_late, path) in zip(cols, change_maps_found):
             with col:
                 png_path = maps_dir / f"{variable}_change_{y_early}_{y_late}.png"
-                arr, prof, _ = load_raster(str(path))
-                if arr is None:
-                    continue
-                valid = arr[np.isfinite(arr)]
                 if png_path.exists():
                     st.image(
                         str(png_path),
                         caption=str(png_path.relative_to(PROJECT_ROOT)),
                         use_container_width=True,
                     )
-                    if valid.size:
-                        st.caption(f"Mean change: {float(valid.mean()):+.3f}")
+                    arr_preview, _, _ = load_raster(str(path))
+                    if arr_preview is not None:
+                        valid_preview = arr_preview[np.isfinite(arr_preview)]
+                        if valid_preview.size:
+                            st.caption(f"Mean change: {float(valid_preview.mean()):+.3f}")
                     continue
+                arr, prof, _ = load_raster(str(path))
+                if arr is None:
+                    continue
+                valid = arr[np.isfinite(arr)]
                 vabs = float(np.percentile(np.abs(valid), 98)) if valid.size else 1
                 fig = render_raster_map(
                     arr, prof,
@@ -199,8 +236,17 @@ with tab_change:
 with tab_trend:
     tau_path   = temporal_dir / f"{variable}_trend_tau.tif"
     slope_path = temporal_dir / f"{variable}_trend_slope_per_year.tif"
+    tau_png = maps_dir / f"{variable}_trend_tau.png"
+    slope_png = maps_dir / f"{variable}_trend_slope_per_year.png"
 
     if not tau_path.exists():
+        trend_pngs = [path for path in [tau_png, slope_png] if path.exists()]
+        if trend_pngs:
+            cols = st.columns(len(trend_pngs), gap="medium")
+            for col, map_path in zip(cols, trend_pngs):
+                with col:
+                    st.image(str(map_path), caption=str(map_path.relative_to(PROJECT_ROOT)), use_container_width=True)
+            st.stop()
         no_data(
             f"{variable}_trend_tau.tif",
             f"python scripts/10_temporal_comparison.py --variable {variable} --years 2015 2023 2025",

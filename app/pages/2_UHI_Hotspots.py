@@ -75,6 +75,34 @@ uhi_arr, uhi_profile, _ = load_raster(str(uhi_path))
 lgas = load_vector(str(LGAS_PATH))
 
 if uhi_arr is None:
+    web_maps = [
+        ("UHI Intensity", pp("outputs/maps/uhi_{y}.png", y=year)),
+        ("UHI Classes", pp("outputs/maps/uhi_classes_{y}.png", y=year)),
+        ("LISA Clusters", pp("outputs/maps/lisa_clusters_{y}.png", y=year)),
+        ("Gi* Hotspots", pp("outputs/maps/gistar_hotspots_{y}.png", y=year)),
+    ]
+    web_maps = [(label, path) for label, path in web_maps if path.exists()]
+    moran_web = pp("outputs/tables/morans_i_{y}.csv", y=year)
+    urban_rural_web = pp("outputs/tables/urban_rural_lst_{y}.csv", y=year)
+    if web_maps or moran_web.exists() or urban_rural_web.exists():
+        st.markdown("---")
+        st.info("Cloud display is using committed UHI/ESDA PNG and CSV outputs. Full raster/vector exploration is available when local processed data exists.")
+        if web_maps:
+            tabs = st.tabs([label for label, _ in web_maps])
+            for tab, (label, map_path) in zip(tabs, web_maps):
+                with tab:
+                    st.image(str(map_path), caption=f"{label} - {map_path.relative_to(PROJECT_ROOT)}", use_container_width=True)
+        st.markdown("---")
+        st.subheader("UHI and Spatial Statistics Tables")
+        for label, path in {"Global Moran's I": moran_web, "Urban-rural LST summary": urban_rural_web}.items():
+            df = load_csv(str(path))
+            with st.expander(label, expanded=True):
+                if df is not None:
+                    st.dataframe(df, use_container_width=True, hide_index=True)
+                else:
+                    st.info(f"{path.name} is not available.")
+        st.stop()
+
     st.markdown("---")
     no_data(
         f"uhi_intensity_{year}.tif",
