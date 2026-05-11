@@ -205,5 +205,4 @@ Large raw rasters, processed rasters, and GeoPackages should normally remain loc
 ## Author
 
 Prepared as an academic and professional portfolio geospatial intelligence project for Ibadan Metropolis, Oyo State, Nigeria.
-#   - M a p p i n g - u r b a n - h e a t - r i s k - i n - I b a d a n - M e t r o p o l i s - O y o - S t a t e - N i g e r i a .  
- 
+#
