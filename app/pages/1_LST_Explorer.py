@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from utils import (
     PROJECT_ROOT, LGAS_PATH, YEARS, pp,
     load_raster, load_vector, load_csv,
-    render_raster_map, no_data, sidebar_year,
+    render_raster_map, no_data, sidebar_year, stat_from_report,
 )
 
 st.set_page_config(page_title="LST Explorer", page_icon="🗺️", layout="wide")
@@ -37,12 +37,40 @@ if arr is None:
     table_path = pp("outputs/tables/lga_lst_summary_{y}.csv", y=year)
     if png_path.exists():
         st.markdown("---")
+        stats = stat_from_report(year, "Land Surface Temperature")
+        if stats:
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Min LST", f"{stats['min']:.1f} °C")
+            c2.metric("Max LST", f"{stats['max']:.1f} °C")
+            c3.metric("Mean LST", f"{stats['mean']:.1f} °C")
+            c4.metric("Std Dev", f"{stats['std']:.1f} °C")
+            st.markdown("---")
         st.subheader(f"Land Surface Temperature Map - {year}")
         st.image(str(png_path), caption=str(png_path.relative_to(PROJECT_ROOT)), use_container_width=True)
         lst_table = load_csv(str(table_path))
         if lst_table is not None:
             st.markdown("---")
             st.subheader(f"LGA LST Summary - {year}")
+            mean_col = next((c for c in lst_table.columns if "mean" in c.lower() and "lst" in c.lower()), None)
+            name_col = next((c for c in lst_table.columns if "lga" in c.lower()), None)
+            if mean_col and name_col:
+                fig_bar = go.Figure(go.Bar(
+                    x=lst_table[name_col],
+                    y=lst_table[mean_col],
+                    marker_color=["#E05252" if str(z).lower() == "core_urban" else "#4A90D9"
+                                  for z in lst_table.get("zone_type", [""] * len(lst_table))],
+                    text=lst_table[mean_col].round(2),
+                    textposition="outside",
+                ))
+                fig_bar.update_layout(
+                    title=f"Mean LST by LGA ({year})",
+                    template="plotly_dark",
+                    xaxis_tickangle=-35,
+                    yaxis_title="Mean LST (°C)",
+                    showlegend=False,
+                    margin=dict(l=10, r=10, t=50, b=70),
+                )
+                st.plotly_chart(fig_bar, use_container_width=True)
             st.dataframe(lst_table, use_container_width=True, hide_index=True)
         st.info("Cloud display is using committed PNG/CSV outputs. Full raster exploration is available when processed GeoTIFFs exist locally.")
         st.stop()

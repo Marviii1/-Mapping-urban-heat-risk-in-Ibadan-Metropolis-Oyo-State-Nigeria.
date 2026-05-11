@@ -11,8 +11,8 @@ import plotly.graph_objects as go
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from utils import (
     PROJECT_ROOT, LGAS_PATH, pp,
-    load_raster, load_vector, render_raster_map,
-    render_vector_map, no_data, sidebar_year,
+    load_raster, load_vector, load_csv, render_raster_map,
+    render_vector_map, no_data, sidebar_year, stat_from_report,
 )
 
 
@@ -86,12 +86,61 @@ if uhi_arr is None:
     urban_rural_web = pp("outputs/tables/urban_rural_lst_{y}.csv", y=year)
     if web_maps or moran_web.exists() or urban_rural_web.exists():
         st.markdown("---")
-        st.info("Cloud display is using committed UHI/ESDA PNG and CSV outputs. Full raster/vector exploration is available when local processed data exists.")
+        stats = stat_from_report(year, "Urban Heat Island Intensity")
+        class_df_web = load_csv(str(pp("outputs/tables/uhi_class_distribution_{y}.csv", y=year)))
+        if stats:
+            c1, c2, c3, c4, c5 = st.columns(5)
+            c1.metric("Min UHI", f"{stats['min']:.2f} °C")
+            c2.metric("Max UHI", f"{stats['max']:.2f} °C")
+            c3.metric("Mean UHI", f"{stats['mean']:.2f} °C")
+            if class_df_web is not None and "class_code" in class_df_web.columns:
+                pct_high = float(class_df_web.loc[class_df_web["class_code"].isin([4, 5]), "pct_area"].sum())
+                pct_very_high = float(class_df_web.loc[class_df_web["class_code"] == 5, "pct_area"].sum())
+                c4.metric("% High / Very High", f"{pct_high:.1f}%")
+                c5.metric("% Very High (>6°C)", f"{pct_very_high:.1f}%")
+            else:
+                c4.metric("Std Dev", f"{stats['std']:.2f} °C")
+                c5.metric("Map Source", "PNG")
+            st.markdown("---")
         if web_maps:
-            tabs = st.tabs([label for label, _ in web_maps])
-            for tab, (label, map_path) in zip(tabs, web_maps):
-                with tab:
-                    st.image(str(map_path), caption=f"{label} - {map_path.relative_to(PROJECT_ROOT)}", use_container_width=True)
+            tab_labels = ["UHI Intensity", "UHI Classes", "LISA Clusters", "Gi* Hotspots"]
+            tabs = st.tabs(tab_labels)
+            map_lookup = {label: path for label, path in web_maps}
+            with tabs[0]:
+                col_map, col_right = st.columns([3, 2], gap="large")
+                with col_map:
+                    path = map_lookup.get("UHI Intensity")
+                    if path:
+                        st.image(str(path), caption=str(path.relative_to(PROJECT_ROOT)), use_container_width=True)
+                with col_right:
+                    if class_df_web is not None:
+                        pie_df = class_df_web[class_df_web["pixel_count"] > 0].copy()
+                        fig_pie = px.pie(
+                            pie_df,
+                            names="label",
+                            values="pct_area",
+                            title=f"UHI Class Area Distribution ({year})",
+                            template="plotly_dark",
+                        )
+                        fig_pie.update_traces(textinfo="percent+label", textfont_size=11)
+                        fig_pie.update_layout(showlegend=False, margin=dict(t=50, b=10))
+                        st.plotly_chart(fig_pie, use_container_width=True)
+                    else:
+                        st.info("Run `python scripts/12_export_dashboard_metrics.py` locally to add UHI class distribution tables to cloud.")
+            with tabs[1]:
+                path = map_lookup.get("UHI Classes")
+                if path:
+                    st.image(str(path), caption=str(path.relative_to(PROJECT_ROOT)), use_container_width=True)
+                if class_df_web is not None:
+                    st.dataframe(class_df_web, use_container_width=True, hide_index=True)
+            with tabs[2]:
+                path = map_lookup.get("LISA Clusters")
+                if path:
+                    st.image(str(path), caption=str(path.relative_to(PROJECT_ROOT)), use_container_width=True)
+            with tabs[3]:
+                path = map_lookup.get("Gi* Hotspots")
+                if path:
+                    st.image(str(path), caption=str(path.relative_to(PROJECT_ROOT)), use_container_width=True)
         st.markdown("---")
         st.subheader("UHI and Spatial Statistics Tables")
         for label, path in {"Global Moran's I": moran_web, "Urban-rural LST summary": urban_rural_web}.items():

@@ -307,6 +307,56 @@ def load_text(path_str: str):
 
 
 @st.cache_data(show_spinner=False)
+def load_report_stats(year: int):
+    """Read the report's raster statistics table as a small DataFrame."""
+    import pandas as pd
+
+    text = load_text(str(PROJECT_ROOT / f"outputs/reports/ibadan_heat_risk_summary_{year}.md"))
+    if not text:
+        return None
+
+    records = []
+    in_table = False
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if line.startswith("| Layer |"):
+            in_table = True
+            continue
+        if in_table and (not line or not line.startswith("|")):
+            break
+        if not in_table or line.startswith("|---"):
+            continue
+
+        parts = [part.strip() for part in line.strip("|").split("|")]
+        if len(parts) != 5:
+            continue
+        layer, min_v, mean_v, max_v, std_v = parts
+        try:
+            records.append({
+                "layer": layer,
+                "min": float(min_v),
+                "mean": float(mean_v),
+                "max": float(max_v),
+                "std": float(std_v),
+            })
+        except ValueError:
+            continue
+
+    return pd.DataFrame(records) if records else None
+
+
+def stat_from_report(year: int, layer: str) -> dict[str, float] | None:
+    """Return one layer's min/mean/max/std values from the markdown report."""
+    stats = load_report_stats(year)
+    if stats is None:
+        return None
+    match = stats[stats["layer"].str.lower() == layer.lower()]
+    if match.empty:
+        return None
+    return match.iloc[0].to_dict()
+
+
+@st.cache_data(show_spinner=False)
 def load_catalog(year: int):
     return load_csv(str(PROJECT_ROOT / f"outputs/catalog/output_catalog_{year}.csv"))
 

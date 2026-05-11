@@ -61,12 +61,29 @@ if not gwr_gpkg.exists() and not ndvi_coef.exists():
     }
     if web_maps or any(path.exists() for path in web_tables.values()):
         st.markdown("---")
-        st.info("Cloud display is using committed GWR PNG/CSV outputs. Local GeoPackage/raster exploration is available in the full desktop project.")
+        ols_df = load_csv(str(web_tables["Global OLS coefficients"]))
+        vif_df = load_csv(str(web_tables["VIF diagnostics"]))
+        if ols_df is not None:
+            coef_col = next((c for c in ols_df.columns if "estimate" in c.lower()), None)
+            var_col = next((c for c in ols_df.columns if "variable" in c.lower()), None)
+            p_col = next((c for c in ols_df.columns if "p" in c.lower()), None)
+            if coef_col and var_col:
+                cols = st.columns(4)
+                for idx, var_name in enumerate(["ndvi", "ndbi", "built_up_density"]):
+                    row = ols_df[ols_df[var_col].astype(str).str.lower() == var_name]
+                    if not row.empty:
+                        p_text = ""
+                        if p_col:
+                            p_text = f"p={float(row.iloc[0][p_col]):.3g}"
+                        cols[idx].metric(f"Global β {var_name}", f"{float(row.iloc[0][coef_col]):.3f}", p_text or None)
+                if vif_df is not None and "vif" in [c.lower() for c in vif_df.columns]:
+                    vif_col = next(c for c in vif_df.columns if c.lower() == "vif")
+                    cols[3].metric("Max VIF", f"{float(vif_df[vif_col].max()):.2f}")
+                st.markdown("---")
         if web_maps:
-            st.subheader("GWR Cartographic Outputs")
-            cols = st.columns(2)
-            for idx, map_path in enumerate(web_maps):
-                with cols[idx % 2]:
+            tabs = st.tabs(["Local R²", "NDVI Coefficient", "NDBI Coefficient", "Built-up Density Coefficient"])
+            for tab, map_path in zip(tabs, web_maps):
+                with tab:
                     st.image(str(map_path), caption=str(map_path.relative_to(PROJECT_ROOT)), use_container_width=True)
         st.markdown("---")
         st.subheader("GWR Diagnostic Tables")

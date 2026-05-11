@@ -1,0 +1,6 @@
+year,class_code,label,pixel_count,area_km2,pct_area,mean_uhi_celsius,min_uhi_celsius,max_uhi_celsius
+2015,1,Very Low,1489972,0.0,41.2,-1.14,-3.55,-0.0
+2015,2,Low,840986,0.0,23.2,0.88,0.0,2.0
+2015,3,Moderate,470754,0.0,13.0,2.94,2.0,4.0
+2015,4,High,415331,0.0,11.5,5.0,4.0,6.0
+2015,5,Very High,400164,0.0,11.1,7.17,6.0,23.17

@@ -53,6 +53,10 @@ outputs/*/*
 *.cpg
 *.gpkg
 
+# Small boundary layers required for Streamlit Cloud interactive map.
+!data/processed/uhi/ibadan_lgas.gpkg
+!data/processed/uhi/ibadan_metropolitan_boundary.gpkg
+
 # OS/editor
 .DS_Store
 Thumbs.db
