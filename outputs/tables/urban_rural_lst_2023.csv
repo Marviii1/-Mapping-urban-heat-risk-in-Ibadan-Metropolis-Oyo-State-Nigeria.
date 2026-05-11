@@ -1,0 +1,12 @@
+year,lga_name,zone_type,mean_lst_celsius,max_lst_celsius,min_lst_celsius,std_lst_celsius
+2023,Ibadan North-East,core_urban,40.6,43.79,36.92,0.84
+2023,Ibadan South-East,core_urban,39.99,42.79,32.73,1.27
+2023,Ibadan North,core_urban,39.3,42.65,30.62,1.6
+2023,Ibadan South-West,core_urban,39.09,42.84,32.28,1.36
+2023,Ibadan North-West,core_urban,38.66,42.68,30.06,2.5
+2023,Egbeda,peri_urban,37.21,46.08,28.91,2.84
+2023,Ido,peri_urban,35.93,47.79,28.85,3.03
+2023,Akinyele,peri_urban,34.56,43.05,28.06,3.14
+2023,Lagelu,peri_urban,34.45,43.04,28.5,3.35
+2023,Ona Ara,peri_urban,33.31,44.57,28.57,3.66
+2023,Oluyole,peri_urban,33.25,44.71,28.54,2.5

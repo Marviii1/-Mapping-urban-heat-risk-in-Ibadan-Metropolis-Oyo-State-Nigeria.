@@ -1,0 +1,20 @@
+heat_vulnerability_index:
+  exposure:
+    weight: 0.40
+    indicators:
+      lst_mean: 0.50
+      uhi_intensity: 0.30
+      hotspot_membership: 0.20
+
+  sensitivity:
+    weight: 0.35
+    indicators:
+      population_density: 0.60
+      built_up_density: 0.40
+
+  adaptive_capacity:
+    weight: 0.25
+    indicators:
+      ndvi: 0.50
+      distance_to_green_space: 0.30
+      distance_to_water: 0.20

@@ -1,0 +1,42 @@
+project:
+  name: "Ibadan Urban Heat Risk Intelligence System"
+  study_area: "Ibadan Metropolis, Oyo State, Nigeria"
+  crs_projected: "EPSG:32631"
+  crs_geographic: "EPSG:4326"
+
+study_area:
+  state_name: "Oyo"
+  # Names match the LGA column in data/raw/boundary/ibadan_lgas.gpkg exactly
+  target_lgas:
+    # Core urban LGAs
+    - "Ibadan North"
+    - "Ibadan North-East"
+    - "Ibadan North-West"
+    - "Ibadan South-East"
+    - "Ibadan South-West"
+    # Peri-urban / fringe LGAs
+    - "Akinyele"
+    - "Egbeda"
+    - "Ido"
+    - "Lagelu"
+    - "Oluyole"
+    - "Ona Ara"
+  core_lgas:
+    - "Ibadan North"
+    - "Ibadan North-East"
+    - "Ibadan North-West"
+    - "Ibadan South-East"
+    - "Ibadan South-West"
+  periurban_lgas:
+    - "Akinyele"
+    - "Egbeda"
+    - "Ido"
+    - "Lagelu"
+    - "Oluyole"
+    - "Ona Ara"
+
+analysis:
+  season: "dry"
+  months: [12, 1, 2, 3]
+  years: [2015, 2020, 2023]
+  grid_resolution_m: 100

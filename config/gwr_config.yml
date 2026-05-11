@@ -1,0 +1,11 @@
+gwr:
+  kernel: "bisquare"
+  fixed: false
+  bandwidth_search: true
+  standardize_predictors: true
+  dependent_variable: "lst"
+  predictors:
+    - "ndvi"
+    - "ndbi"
+    - "population_density"
+    - "built_up_density"

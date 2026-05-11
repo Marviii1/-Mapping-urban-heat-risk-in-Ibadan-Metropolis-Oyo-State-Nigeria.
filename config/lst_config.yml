@@ -1,0 +1,7 @@
+lst:
+  preferred_source: "landsat_collection_2_level_2"
+  temperature_band: "ST_B10"
+  scale_factor: 0.00341802
+  add_offset: 149.0
+  convert_kelvin_to_celsius: true
+  cloud_mask: true

@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Environments - use existing gis_env, do not commit env folders
+.venv/
+venv/
+env/
+
+# Local data and generated outputs
+data/raw/*
+data/interim/*
+data/processed/*
+data/external/*
+outputs/*
+
+!data/raw/*/
+!data/interim/*/
+!data/processed/*/
+!outputs/*/
+data/raw/*/*
+data/interim/*/*
+data/processed/*/*
+outputs/*/*
+
+!data/raw/*/.gitkeep
+!data/interim/*/.gitkeep
+!data/processed/*/.gitkeep
+!data/external/.gitkeep
+!outputs/*/.gitkeep
+
+# Lightweight web/report artifacts may be committed for Streamlit Cloud.
+!outputs/maps/*.png
+!outputs/figures/*.png
+!outputs/tables/*.csv
+!outputs/reports/*.md
+!outputs/reports/*.pdf
+!outputs/catalog/*.csv
+!outputs/catalog/*.json
+
+# GIS sidecars and large rasters are normally local inputs/outputs
+*.tif
+*.tiff
+*.img
+*.vrt
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.gpkg
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/

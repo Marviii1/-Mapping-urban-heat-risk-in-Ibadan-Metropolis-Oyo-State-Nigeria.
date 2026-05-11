@@ -1,0 +1,14 @@
+[project]
+name = "ibadan-urban-heat-risk"
+version = "0.1.0"
+description = "CLI-first geospatial intelligence pipeline for urban heat risk in Ibadan Metropolis, Nigeria."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Project Author" }]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

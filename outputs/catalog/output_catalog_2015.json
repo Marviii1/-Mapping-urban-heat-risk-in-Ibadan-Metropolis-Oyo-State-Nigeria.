@@ -1,0 +1,299 @@
+[
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "gwr_local_r2",
+    "path": "outputs/maps/gwr_local_r2_2015.png",
+    "exists": true,
+    "description": "GWR Local R2 PNG map",
+    "size_mb": 0.182
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "gwr_coef_ndvi",
+    "path": "outputs/maps/gwr_coef_ndvi_2015.png",
+    "exists": true,
+    "description": "GWR Local Coefficient: NDVI PNG map",
+    "size_mb": 0.185
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "gwr_coef_ndbi",
+    "path": "outputs/maps/gwr_coef_ndbi_2015.png",
+    "exists": true,
+    "description": "GWR Local Coefficient: NDBI PNG map",
+    "size_mb": 0.186
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "gwr_coef_built_up_density",
+    "path": "outputs/maps/gwr_coef_built_up_density_2015.png",
+    "exists": true,
+    "description": "GWR Local Coefficient: Built-up Density PNG map",
+    "size_mb": 0.186
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "lst",
+    "path": "outputs/maps/lst_2015.png",
+    "exists": true,
+    "description": "Lst cartographic map",
+    "size_mb": 2.744
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "uhi",
+    "path": "outputs/maps/uhi_2015.png",
+    "exists": true,
+    "description": "Uhi cartographic map",
+    "size_mb": 2.317
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "ndvi",
+    "path": "outputs/maps/ndvi_2015.png",
+    "exists": true,
+    "description": "Ndvi cartographic map",
+    "size_mb": 3.035
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "ndbi",
+    "path": "outputs/maps/ndbi_2015.png",
+    "exists": true,
+    "description": "Ndbi cartographic map",
+    "size_mb": 2.96
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "hvi",
+    "path": "outputs/maps/hvi_2015.png",
+    "exists": true,
+    "description": "Hvi cartographic map",
+    "size_mb": 2.299
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "heat_exposure",
+    "path": "outputs/maps/heat_exposure_2015.png",
+    "exists": true,
+    "description": "Heat Exposure cartographic map",
+    "size_mb": 2.321
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "sensitivity",
+    "path": "outputs/maps/sensitivity_2015.png",
+    "exists": true,
+    "description": "Sensitivity cartographic map",
+    "size_mb": 1.21
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "adaptive_capacity",
+    "path": "outputs/maps/adaptive_capacity_2015.png",
+    "exists": true,
+    "description": "Adaptive Capacity cartographic map",
+    "size_mb": 2.257
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "uhi_classes",
+    "path": "outputs/maps/uhi_classes_2015.png",
+    "exists": true,
+    "description": "Uhi Classes cartographic map",
+    "size_mb": 0.394
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "lisa_clusters",
+    "path": "outputs/maps/lisa_clusters_2015.png",
+    "exists": true,
+    "description": "Lisa Clusters cartographic map",
+    "size_mb": 0.155
+  },
+  {
+    "year": 2015,
+    "kind": "map",
+    "name": "gistar_hotspots",
+    "path": "outputs/maps/gistar_hotspots_2015.png",
+    "exists": true,
+    "description": "Gistar Hotspots cartographic map",
+    "size_mb": 0.145
+  },
+  {
+    "year": 2015,
+    "kind": "table",
+    "name": "lga_lst_summary",
+    "path": "outputs/tables/lga_lst_summary_2015.csv",
+    "exists": true,
+    "description": "Lga Lst Summary table",
+    "size_mb": 0.001
+  },
+  {
+    "year": 2015,
+    "kind": "table",
+    "name": "lga_hvi_summary",
+    "path": "outputs/tables/lga_hvi_summary_2015.csv",
+    "exists": true,
+    "description": "Lga Hvi Summary table",
+    "size_mb": 0.001
+  },
+  {
+    "year": 2015,
+    "kind": "table",
+    "name": "hvi_ranking",
+    "path": "outputs/tables/ibadan_hvi_ranking_2015.csv",
+    "exists": true,
+    "description": "Hvi Ranking table",
+    "size_mb": 0.0
+  },
+  {
+    "year": 2015,
+    "kind": "table",
+    "name": "morans_i",
+    "path": "outputs/tables/morans_i_2015.csv",
+    "exists": true,
+    "description": "Morans I table",
+    "size_mb": 0.0
+  },
+  {
+    "year": 2015,
+    "kind": "table",
+    "name": "gwr_correlations",
+    "path": "outputs/tables/gwr_input_correlations_2015.csv",
+    "exists": true,
+    "description": "Gwr Correlations table",
+    "size_mb": 0.0
+  },
+  {
+    "year": 2015,
+    "kind": "table",
+    "name": "gwr_vif",
+    "path": "outputs/tables/gwr_input_vif_2015.csv",
+    "exists": true,
+    "description": "Gwr Vif table",
+    "size_mb": 0.0
+  },
+  {
+    "year": 2015,
+    "kind": "table",
+    "name": "gwr_ols_coefficients",
+    "path": "outputs/tables/gwr_global_ols_coefficients_2015.csv",
+    "exists": true,
+    "description": "Gwr Ols Coefficients table",
+    "size_mb": 0.0
+  },
+  {
+    "year": 2015,
+    "kind": "report",
+    "name": "markdown",
+    "path": "outputs/reports/ibadan_heat_risk_summary_2015.md",
+    "exists": true,
+    "description": "MARKDOWN report",
+    "size_mb": 0.003
+  },
+  {
+    "year": 2015,
+    "kind": "report",
+    "name": "pdf",
+    "path": "outputs/reports/ibadan_heat_risk_summary_2015.pdf",
+    "exists": true,
+    "description": "PDF report",
+    "size_mb": 3.984
+  },
+  {
+    "year": 2015,
+    "kind": "source",
+    "name": "ibadan_lgas",
+    "path": "data/processed/uhi/ibadan_lgas.gpkg",
+    "exists": true,
+    "description": "Source analysis file: ibadan_lgas",
+    "size_mb": 0.119
+  },
+  {
+    "year": 2015,
+    "kind": "source",
+    "name": "ibadan_boundary",
+    "path": "data/processed/uhi/ibadan_metropolitan_boundary.gpkg",
+    "exists": true,
+    "description": "Source analysis file: ibadan_boundary",
+    "size_mb": 0.098
+  },
+  {
+    "year": 2015,
+    "kind": "source",
+    "name": "gwr_results",
+    "path": "data/processed/gwr/gwr_results_2015.gpkg",
+    "exists": true,
+    "description": "Source analysis file: gwr_results",
+    "size_mb": 4.235
+  },
+  {
+    "year": 2015,
+    "kind": "source",
+    "name": "lisa_clusters",
+    "path": "data/processed/esda/lisa_clusters_2015.gpkg",
+    "exists": true,
+    "description": "Source analysis file: lisa_clusters",
+    "size_mb": 3.731
+  },
+  {
+    "year": 2015,
+    "kind": "source",
+    "name": "gistar_hotspots",
+    "path": "data/processed/esda/gistar_hotspots_2015.gpkg",
+    "exists": true,
+    "description": "Source analysis file: gistar_hotspots",
+    "size_mb": 3.785
+  },
+  {
+    "year": 2015,
+    "kind": "source",
+    "name": "hvi_raster",
+    "path": "data/processed/vulnerability/heat_vulnerability_index_2015.tif",
+    "exists": true,
+    "description": "Source analysis file: hvi_raster",
+    "size_mb": 12.262
+  },
+  {
+    "year": 2015,
+    "kind": "source",
+    "name": "hvi_ranking",
+    "path": "data/processed/tables/ibadan_hvi_ranking_2015.csv",
+    "exists": true,
+    "description": "Source analysis file: hvi_ranking",
+    "size_mb": 0.0
+  },
+  {
+    "year": 2015,
+    "kind": "source",
+    "name": "gwr_summary",
+    "path": "data/processed/gwr/gwr_summary_2015.txt",
+    "exists": true,
+    "description": "Source analysis file: gwr_summary",
+    "size_mb": 0.001
+  },
+  {
+    "year": 2015,
+    "kind": "source",
+    "name": "global_ols_summary",
+    "path": "data/processed/gwr/gwr_global_ols_summary_2015.txt",
+    "exists": true,
+    "description": "Source analysis file: global_ols_summary",
+    "size_mb": 0.002
+  }
+]

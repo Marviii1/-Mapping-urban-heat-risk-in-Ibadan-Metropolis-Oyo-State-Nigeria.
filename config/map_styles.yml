@@ -1,0 +1,9 @@
+maps:
+  lst_cmap: "inferno"
+  uhi_cmap: "YlOrRd"
+  ndvi_cmap: "RdYlGn"
+  vulnerability_cmap: "magma_r"
+  hotspot_colors:
+    hot_spot: "#d7191c"
+    cold_spot: "#2c7bb6"
+    not_significant: "#d9d9d9"

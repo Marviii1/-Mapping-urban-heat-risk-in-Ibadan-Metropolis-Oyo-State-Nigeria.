@@ -1,0 +1,12 @@
+year,lga_name,zone_type,mean_lst_celsius,max_lst_celsius,min_lst_celsius,std_lst_celsius
+2015,Ibadan North-East,core_urban,34.69,37.62,29.56,1.0
+2015,Ibadan South-East,core_urban,33.89,36.55,26.81,1.25
+2015,Ibadan North,core_urban,33.58,36.87,27.76,1.28
+2015,Ibadan South-West,core_urban,33.4,36.77,27.58,1.26
+2015,Ibadan North-West,core_urban,33.24,37.08,25.14,1.94
+2015,Egbeda,peri_urban,29.81,39.81,24.39,2.93
+2015,Ido,peri_urban,28.88,38.33,23.99,2.51
+2015,Lagelu,peri_urban,28.78,37.17,24.35,2.84
+2015,Akinyele,peri_urban,28.36,37.85,23.86,2.78
+2015,Ona Ara,peri_urban,27.92,40.12,24.1,2.89
+2015,Oluyole,peri_urban,27.54,40.05,23.89,2.13

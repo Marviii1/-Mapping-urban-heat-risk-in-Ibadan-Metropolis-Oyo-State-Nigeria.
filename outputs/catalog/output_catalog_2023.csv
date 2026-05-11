@@ -1,0 +1,34 @@
+year,kind,name,path,exists,description,size_mb
+2023,map,gwr_local_r2,outputs/maps/gwr_local_r2_2023.png,True,GWR Local R2 PNG map,0.191
+2023,map,gwr_coef_ndvi,outputs/maps/gwr_coef_ndvi_2023.png,True,GWR Local Coefficient: NDVI PNG map,0.187
+2023,map,gwr_coef_ndbi,outputs/maps/gwr_coef_ndbi_2023.png,True,GWR Local Coefficient: NDBI PNG map,0.188
+2023,map,gwr_coef_built_up_density,outputs/maps/gwr_coef_built_up_density_2023.png,True,GWR Local Coefficient: Built-up Density PNG map,0.198
+2023,map,lst,outputs/maps/lst_2023.png,True,Lst cartographic map,2.845
+2023,map,uhi,outputs/maps/uhi_2023.png,True,Uhi cartographic map,2.468
+2023,map,ndvi,outputs/maps/ndvi_2023.png,True,Ndvi cartographic map,3.386
+2023,map,ndbi,outputs/maps/ndbi_2023.png,True,Ndbi cartographic map,3.305
+2023,map,hvi,outputs/maps/hvi_2023.png,True,Hvi cartographic map,2.514
+2023,map,heat_exposure,outputs/maps/heat_exposure_2023.png,True,Heat Exposure cartographic map,2.463
+2023,map,sensitivity,outputs/maps/sensitivity_2023.png,True,Sensitivity cartographic map,1.282
+2023,map,adaptive_capacity,outputs/maps/adaptive_capacity_2023.png,True,Adaptive Capacity cartographic map,2.422
+2023,map,uhi_classes,outputs/maps/uhi_classes_2023.png,True,Uhi Classes cartographic map,0.424
+2023,map,lisa_clusters,outputs/maps/lisa_clusters_2023.png,True,Lisa Clusters cartographic map,0.156
+2023,map,gistar_hotspots,outputs/maps/gistar_hotspots_2023.png,True,Gistar Hotspots cartographic map,0.145
+2023,table,lga_lst_summary,outputs/tables/lga_lst_summary_2023.csv,True,Lga Lst Summary table,0.001
+2023,table,lga_hvi_summary,outputs/tables/lga_hvi_summary_2023.csv,True,Lga Hvi Summary table,0.001
+2023,table,hvi_ranking,outputs/tables/ibadan_hvi_ranking_2023.csv,True,Hvi Ranking table,0.0
+2023,table,morans_i,outputs/tables/morans_i_2023.csv,True,Morans I table,0.0
+2023,table,gwr_correlations,outputs/tables/gwr_input_correlations_2023.csv,True,Gwr Correlations table,0.0
+2023,table,gwr_vif,outputs/tables/gwr_input_vif_2023.csv,True,Gwr Vif table,0.0
+2023,table,gwr_ols_coefficients,outputs/tables/gwr_global_ols_coefficients_2023.csv,True,Gwr Ols Coefficients table,0.0
+2023,report,markdown,outputs/reports/ibadan_heat_risk_summary_2023.md,True,MARKDOWN report,0.003
+2023,report,pdf,outputs/reports/ibadan_heat_risk_summary_2023.pdf,True,PDF report,4.184
+2023,source,ibadan_lgas,data/processed/uhi/ibadan_lgas.gpkg,True,Source analysis file: ibadan_lgas,0.119
+2023,source,ibadan_boundary,data/processed/uhi/ibadan_metropolitan_boundary.gpkg,True,Source analysis file: ibadan_boundary,0.098
+2023,source,gwr_results,data/processed/gwr/gwr_results_2023.gpkg,True,Source analysis file: gwr_results,4.432
+2023,source,lisa_clusters,data/processed/esda/lisa_clusters_2023.gpkg,True,Source analysis file: lisa_clusters,3.736
+2023,source,gistar_hotspots,data/processed/esda/gistar_hotspots_2023.gpkg,True,Source analysis file: gistar_hotspots,3.789
+2023,source,hvi_raster,data/processed/vulnerability/heat_vulnerability_index_2023.tif,True,Source analysis file: hvi_raster,12.325
+2023,source,hvi_ranking,data/processed/tables/ibadan_hvi_ranking_2023.csv,True,Source analysis file: hvi_ranking,0.0
+2023,source,gwr_summary,data/processed/gwr/gwr_summary_2023.txt,True,Source analysis file: gwr_summary,0.001
+2023,source,global_ols_summary,data/processed/gwr/gwr_global_ols_summary_2023.txt,True,Source analysis file: global_ols_summary,0.002

@@ -1,0 +1,34 @@
+year,kind,name,path,exists,description,size_mb
+2015,map,gwr_local_r2,outputs/maps/gwr_local_r2_2015.png,True,GWR Local R2 PNG map,0.182
+2015,map,gwr_coef_ndvi,outputs/maps/gwr_coef_ndvi_2015.png,True,GWR Local Coefficient: NDVI PNG map,0.185
+2015,map,gwr_coef_ndbi,outputs/maps/gwr_coef_ndbi_2015.png,True,GWR Local Coefficient: NDBI PNG map,0.186
+2015,map,gwr_coef_built_up_density,outputs/maps/gwr_coef_built_up_density_2015.png,True,GWR Local Coefficient: Built-up Density PNG map,0.186
+2015,map,lst,outputs/maps/lst_2015.png,True,Lst cartographic map,2.744
+2015,map,uhi,outputs/maps/uhi_2015.png,True,Uhi cartographic map,2.317
+2015,map,ndvi,outputs/maps/ndvi_2015.png,True,Ndvi cartographic map,3.035
+2015,map,ndbi,outputs/maps/ndbi_2015.png,True,Ndbi cartographic map,2.96
+2015,map,hvi,outputs/maps/hvi_2015.png,True,Hvi cartographic map,2.299
+2015,map,heat_exposure,outputs/maps/heat_exposure_2015.png,True,Heat Exposure cartographic map,2.321
+2015,map,sensitivity,outputs/maps/sensitivity_2015.png,True,Sensitivity cartographic map,1.21
+2015,map,adaptive_capacity,outputs/maps/adaptive_capacity_2015.png,True,Adaptive Capacity cartographic map,2.257
+2015,map,uhi_classes,outputs/maps/uhi_classes_2015.png,True,Uhi Classes cartographic map,0.394
+2015,map,lisa_clusters,outputs/maps/lisa_clusters_2015.png,True,Lisa Clusters cartographic map,0.155
+2015,map,gistar_hotspots,outputs/maps/gistar_hotspots_2015.png,True,Gistar Hotspots cartographic map,0.145
+2015,table,lga_lst_summary,outputs/tables/lga_lst_summary_2015.csv,True,Lga Lst Summary table,0.001
+2015,table,lga_hvi_summary,outputs/tables/lga_hvi_summary_2015.csv,True,Lga Hvi Summary table,0.001
+2015,table,hvi_ranking,outputs/tables/ibadan_hvi_ranking_2015.csv,True,Hvi Ranking table,0.0
+2015,table,morans_i,outputs/tables/morans_i_2015.csv,True,Morans I table,0.0
+2015,table,gwr_correlations,outputs/tables/gwr_input_correlations_2015.csv,True,Gwr Correlations table,0.0
+2015,table,gwr_vif,outputs/tables/gwr_input_vif_2015.csv,True,Gwr Vif table,0.0
+2015,table,gwr_ols_coefficients,outputs/tables/gwr_global_ols_coefficients_2015.csv,True,Gwr Ols Coefficients table,0.0
+2015,report,markdown,outputs/reports/ibadan_heat_risk_summary_2015.md,True,MARKDOWN report,0.003
+2015,report,pdf,outputs/reports/ibadan_heat_risk_summary_2015.pdf,True,PDF report,3.984
+2015,source,ibadan_lgas,data/processed/uhi/ibadan_lgas.gpkg,True,Source analysis file: ibadan_lgas,0.119
+2015,source,ibadan_boundary,data/processed/uhi/ibadan_metropolitan_boundary.gpkg,True,Source analysis file: ibadan_boundary,0.098
+2015,source,gwr_results,data/processed/gwr/gwr_results_2015.gpkg,True,Source analysis file: gwr_results,4.235
+2015,source,lisa_clusters,data/processed/esda/lisa_clusters_2015.gpkg,True,Source analysis file: lisa_clusters,3.731
+2015,source,gistar_hotspots,data/processed/esda/gistar_hotspots_2015.gpkg,True,Source analysis file: gistar_hotspots,3.785
+2015,source,hvi_raster,data/processed/vulnerability/heat_vulnerability_index_2015.tif,True,Source analysis file: hvi_raster,12.262
+2015,source,hvi_ranking,data/processed/tables/ibadan_hvi_ranking_2015.csv,True,Source analysis file: hvi_ranking,0.0
+2015,source,gwr_summary,data/processed/gwr/gwr_summary_2015.txt,True,Source analysis file: gwr_summary,0.001
+2015,source,global_ols_summary,data/processed/gwr/gwr_global_ols_summary_2015.txt,True,Source analysis file: global_ols_summary,0.002

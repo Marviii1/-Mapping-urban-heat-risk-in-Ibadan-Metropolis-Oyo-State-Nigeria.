@@ -1,0 +1,13 @@
+boundary:
+  nigeria_lga_shapefile: "data/raw/boundary/nigeria_lgas.shp"
+landsat:
+  raw_directory: "data/raw/landsat"
+  expected_products: "Landsat 8/9 Collection 2 Level-2 scenes covering Ibadan dry-season months"
+population:
+  worldpop_directory: "data/raw/worldpop"
+built_up:
+  ghsl_directory: "data/raw/ghsl"
+landcover:
+  worldcover_directory: "data/raw/worldcover"
+osm:
+  raw_directory: "data/raw/osm"
