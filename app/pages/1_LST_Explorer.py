@@ -12,8 +12,38 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from utils import (
     PROJECT_ROOT, LGAS_PATH, YEARS, pp,
     load_raster, load_vector, load_csv,
-    render_raster_map, no_data, sidebar_year, stat_from_report,
+    render_raster_map, no_data, sidebar_year,
 )
+
+
+def report_stat(year: int, layer: str) -> dict[str, float] | None:
+    """Read summary statistics from the committed markdown report."""
+    report = PROJECT_ROOT / f"outputs/reports/ibadan_heat_risk_summary_{year}.md"
+    if not report.exists():
+        return None
+    in_table = False
+    for raw in report.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if line.startswith("| Layer |"):
+            in_table = True
+            continue
+        if in_table and (not line or not line.startswith("|")):
+            break
+        if not in_table or line.startswith("|---"):
+            continue
+        parts = [part.strip() for part in line.strip("|").split("|")]
+        if len(parts) >= 5 and parts[0].lower() == layer.lower():
+            try:
+                return {
+                    "layer": parts[0],
+                    "min": float(parts[1]),
+                    "mean": float(parts[2]),
+                    "max": float(parts[3]),
+                    "std": float(parts[4]),
+                }
+            except ValueError:
+                return None
+    return None
 
 st.set_page_config(page_title="LST Explorer", page_icon="🗺️", layout="wide")
 st.title("🗺️ Land Surface Temperature Explorer")
@@ -37,7 +67,7 @@ if arr is None:
     table_path = pp("outputs/tables/lga_lst_summary_{y}.csv", y=year)
     if png_path.exists():
         st.markdown("---")
-        stats = stat_from_report(year, "Land Surface Temperature")
+        stats = report_stat(year, "Land Surface Temperature")
         if stats:
             c1, c2, c3, c4 = st.columns(4)
             c1.metric("Min LST", f"{stats['min']:.1f} °C")

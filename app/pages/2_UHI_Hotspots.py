@@ -12,8 +12,38 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from utils import (
     PROJECT_ROOT, LGAS_PATH, pp,
     load_raster, load_vector, load_csv, render_raster_map,
-    render_vector_map, no_data, sidebar_year, stat_from_report,
+    render_vector_map, no_data, sidebar_year,
 )
+
+
+def report_stat(year: int, layer: str) -> dict[str, float] | None:
+    """Read summary statistics from the committed markdown report."""
+    report = PROJECT_ROOT / f"outputs/reports/ibadan_heat_risk_summary_{year}.md"
+    if not report.exists():
+        return None
+    in_table = False
+    for raw in report.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if line.startswith("| Layer |"):
+            in_table = True
+            continue
+        if in_table and (not line or not line.startswith("|")):
+            break
+        if not in_table or line.startswith("|---"):
+            continue
+        parts = [part.strip() for part in line.strip("|").split("|")]
+        if len(parts) >= 5 and parts[0].lower() == layer.lower():
+            try:
+                return {
+                    "layer": parts[0],
+                    "min": float(parts[1]),
+                    "mean": float(parts[2]),
+                    "max": float(parts[3]),
+                    "std": float(parts[4]),
+                }
+            except ValueError:
+                return None
+    return None
 
 
 def normalise_lisa_cluster(series: pd.Series) -> pd.Series:
@@ -86,7 +116,7 @@ if uhi_arr is None:
     urban_rural_web = pp("outputs/tables/urban_rural_lst_{y}.csv", y=year)
     if web_maps or moran_web.exists() or urban_rural_web.exists():
         st.markdown("---")
-        stats = stat_from_report(year, "Urban Heat Island Intensity")
+        stats = report_stat(year, "Urban Heat Island Intensity")
         class_df_web = load_csv(str(pp("outputs/tables/uhi_class_distribution_{y}.csv", y=year)))
         if stats:
             c1, c2, c3, c4, c5 = st.columns(5)

@@ -15,8 +15,11 @@ WEB_LGAS_PATH = PROJECT_ROOT / "app/assets/ibadan_lgas.geojson"
 WEB_BOUNDARY_PATH = PROJECT_ROOT / "app/assets/ibadan_metropolitan_boundary.geojson"
 LOCAL_LGAS_PATH = PROJECT_ROOT / "data/processed/uhi/ibadan_lgas.gpkg"
 LOCAL_BOUNDARY_PATH = PROJECT_ROOT / "data/processed/uhi/ibadan_metropolitan_boundary.gpkg"
-LGAS_PATH = LOCAL_LGAS_PATH if LOCAL_LGAS_PATH.exists() else WEB_LGAS_PATH
-BOUNDARY_PATH = LOCAL_BOUNDARY_PATH if LOCAL_BOUNDARY_PATH.exists() else WEB_BOUNDARY_PATH
+
+# Prefer GeoJSON when available because Streamlit Cloud handles it more reliably
+# than GeoPackage driver stacks. Local workflows can still use the GeoPackages.
+LGAS_PATH = WEB_LGAS_PATH if WEB_LGAS_PATH.exists() else LOCAL_LGAS_PATH
+BOUNDARY_PATH = WEB_BOUNDARY_PATH if WEB_BOUNDARY_PATH.exists() else LOCAL_BOUNDARY_PATH
 YEARS = [2025, 2023, 2015]
 
 
@@ -285,6 +288,19 @@ def load_vector(path_str: str, layer=None):
 
         return gpd.read_file(path_str, **({} if layer is None else {"layer": layer}))
     except Exception:
+        try:
+            import geopandas as gpd
+
+            path = Path(path_str)
+            fallback = None
+            if path.name == LOCAL_LGAS_PATH.name and WEB_LGAS_PATH.exists():
+                fallback = WEB_LGAS_PATH
+            elif path.name == LOCAL_BOUNDARY_PATH.name and WEB_BOUNDARY_PATH.exists():
+                fallback = WEB_BOUNDARY_PATH
+            if fallback is not None:
+                return gpd.read_file(fallback)
+        except Exception:
+            pass
         return None
 
 
