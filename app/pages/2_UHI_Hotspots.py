@@ -18,6 +18,13 @@ from utils import (
 
 def report_stat(year: int, layer: str) -> dict[str, float] | None:
     """Read summary statistics from the committed markdown report."""
+    stats_csv = PROJECT_ROOT / f"outputs/tables/dashboard_summary_stats_{year}.csv"
+    if stats_csv.exists():
+        stats_df = pd.read_csv(stats_csv)
+        match = stats_df[stats_df["layer"].astype(str).str.lower() == layer.lower()]
+        if not match.empty:
+            return match.iloc[0].to_dict()
+
     report = PROJECT_ROOT / f"outputs/reports/ibadan_heat_risk_summary_{year}.md"
     if not report.exists():
         return None
@@ -158,11 +165,27 @@ if uhi_arr is None:
                     else:
                         st.info("Run `python scripts/12_export_dashboard_metrics.py` locally to add UHI class distribution tables to cloud.")
             with tabs[1]:
-                path = map_lookup.get("UHI Classes")
-                if path:
-                    st.image(str(path), caption=str(path.relative_to(PROJECT_ROOT)), use_container_width=True)
-                if class_df_web is not None:
-                    st.dataframe(class_df_web, use_container_width=True, hide_index=True)
+                col_map, col_table = st.columns([3, 2], gap="large")
+                with col_map:
+                    path = map_lookup.get("UHI Classes")
+                    if path:
+                        st.image(str(path), caption=str(path.relative_to(PROJECT_ROOT)), use_container_width=True)
+                with col_table:
+                    if class_df_web is not None:
+                        fig_bar = px.bar(
+                            class_df_web,
+                            x="label",
+                            y="pct_area",
+                            color="label",
+                            title=f"UHI Class Area Statistics ({year})",
+                            template="plotly_dark",
+                            text="pct_area",
+                            color_discrete_sequence=["#2166AC", "#92C5DE", "#FEE08B", "#F46D43", "#A50026"],
+                        )
+                        fig_bar.update_traces(texttemplate="%{text:.1f}%", textposition="outside")
+                        fig_bar.update_layout(showlegend=False, xaxis_title="Class", yaxis_title="% Area")
+                        st.plotly_chart(fig_bar, use_container_width=True)
+                        st.dataframe(class_df_web, use_container_width=True, hide_index=True)
             with tabs[2]:
                 path = map_lookup.get("LISA Clusters")
                 if path:

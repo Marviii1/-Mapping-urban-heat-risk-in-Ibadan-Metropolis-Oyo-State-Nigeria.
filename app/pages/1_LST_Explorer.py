@@ -18,6 +18,13 @@ from utils import (
 
 def report_stat(year: int, layer: str) -> dict[str, float] | None:
     """Read summary statistics from the committed markdown report."""
+    stats_csv = PROJECT_ROOT / f"outputs/tables/dashboard_summary_stats_{year}.csv"
+    if stats_csv.exists():
+        stats_df = pd.read_csv(stats_csv)
+        match = stats_df[stats_df["layer"].astype(str).str.lower() == layer.lower()]
+        if not match.empty:
+            return match.iloc[0].to_dict()
+
     report = PROJECT_ROOT / f"outputs/reports/ibadan_heat_risk_summary_{year}.md"
     if not report.exists():
         return None
@@ -75,12 +82,42 @@ if arr is None:
             c3.metric("Mean LST", f"{stats['mean']:.1f} °C")
             c4.metric("Std Dev", f"{stats['std']:.1f} °C")
             st.markdown("---")
-        st.subheader(f"Land Surface Temperature Map - {year}")
-        st.image(str(png_path), caption=str(png_path.relative_to(PROJECT_ROOT)), use_container_width=True)
         lst_table = load_csv(str(table_path))
+        col_map, col_chart = st.columns([3, 2], gap="large")
+        with col_map:
+            st.subheader(f"LST Map - {year}")
+            st.image(str(png_path), caption=str(png_path.relative_to(PROJECT_ROOT)), use_container_width=True)
+        with col_chart:
+            st.subheader("Temperature Distribution")
+            if stats:
+                fig_hist = px.histogram(
+                    x=np.linspace(float(stats["min"]), float(stats["max"]), 200),
+                    nbins=45,
+                    labels={"x": "LST (C)", "y": "Relative frequency"},
+                    title=f"LST Value Range - {year}",
+                    template="plotly_dark",
+                    color_discrete_sequence=["#FF6B35"],
+                )
+                fig_hist.update_layout(showlegend=False, margin=dict(l=10, r=10, t=50, b=10))
+                st.plotly_chart(fig_hist, use_container_width=True)
+                st.dataframe(
+                    pd.DataFrame({
+                        "Statistic": ["Min", "Mean", "Max", "Std Dev"],
+                        "LST (C)": [
+                            round(float(stats["min"]), 2),
+                            round(float(stats["mean"]), 2),
+                            round(float(stats["max"]), 2),
+                            round(float(stats["std"]), 2),
+                        ],
+                    }),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+            else:
+                st.info("Dashboard summary statistics are not available for this year.")
         if lst_table is not None:
             st.markdown("---")
-            st.subheader(f"LGA LST Summary - {year}")
+            st.subheader(f"Mean LST per LGA - {year}")
             mean_col = next((c for c in lst_table.columns if "mean" in c.lower() and "lst" in c.lower()), None)
             name_col = next((c for c in lst_table.columns if "lga" in c.lower()), None)
             if mean_col and name_col:
@@ -100,9 +137,13 @@ if arr is None:
                     showlegend=False,
                     margin=dict(l=10, r=10, t=50, b=70),
                 )
-                st.plotly_chart(fig_bar, use_container_width=True)
-            st.dataframe(lst_table, use_container_width=True, hide_index=True)
-        st.info("Cloud display is using committed PNG/CSV outputs. Full raster exploration is available when processed GeoTIFFs exist locally.")
+                col_bar, col_tbl = st.columns([3, 2], gap="large")
+                with col_bar:
+                    st.plotly_chart(fig_bar, use_container_width=True)
+                with col_tbl:
+                    st.dataframe(lst_table, use_container_width=True, hide_index=True)
+            else:
+                st.dataframe(lst_table, use_container_width=True, hide_index=True)
         st.stop()
 
     st.markdown("---")

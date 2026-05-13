@@ -246,11 +246,11 @@ with tab_trend:
             for col, map_path in zip(cols, trend_pngs):
                 with col:
                     st.image(str(map_path), caption=str(map_path.relative_to(PROJECT_ROOT)), use_container_width=True)
-            st.stop()
-        no_data(
-            f"{variable}_trend_tau.tif",
-            f"python scripts/10_temporal_comparison.py --variable {variable} --years 2015 2023 2025",
-        )
+        else:
+            no_data(
+                f"{variable}_trend_tau.tif",
+                f"python scripts/10_temporal_comparison.py --variable {variable} --years 2015 2023 2025",
+            )
     else:
         col_tau, col_slope = st.columns(2, gap="medium")
 

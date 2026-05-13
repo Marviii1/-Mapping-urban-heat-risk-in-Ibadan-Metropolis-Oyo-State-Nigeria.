@@ -63,6 +63,7 @@ if not gwr_gpkg.exists() and not ndvi_coef.exists():
         st.markdown("---")
         ols_df = load_csv(str(web_tables["Global OLS coefficients"]))
         vif_df = load_csv(str(web_tables["VIF diagnostics"]))
+        corr_df = load_csv(str(web_tables["Input correlations"]))
         if ols_df is not None:
             coef_col = next((c for c in ols_df.columns if "estimate" in c.lower()), None)
             var_col = next((c for c in ols_df.columns if "variable" in c.lower()), None)
@@ -80,11 +81,43 @@ if not gwr_gpkg.exists() and not ndvi_coef.exists():
                     vif_col = next(c for c in vif_df.columns if c.lower() == "vif")
                     cols[3].metric("Max VIF", f"{float(vif_df[vif_col].max()):.2f}")
                 st.markdown("---")
+                st.subheader("Global OLS Predictor Effects")
+                fig_coef = px.bar(
+                    ols_df[ols_df[var_col].astype(str).str.lower() != "const"],
+                    x=var_col,
+                    y=coef_col,
+                    color=coef_col,
+                    color_continuous_scale="RdBu_r",
+                    title=f"Global model coefficients - {year}",
+                    template="plotly_dark",
+                    text=coef_col,
+                )
+                fig_coef.add_hline(y=0, line_dash="dash", line_color="white", opacity=0.45)
+                fig_coef.update_traces(texttemplate="%{text:.3f}", textposition="outside")
+                fig_coef.update_layout(
+                    xaxis_title="Predictor",
+                    yaxis_title="Coefficient",
+                    coloraxis_showscale=False,
+                    margin=dict(l=10, r=10, t=55, b=60),
+                )
+                st.plotly_chart(fig_coef, use_container_width=True)
         if web_maps:
             tabs = st.tabs(["Local R²", "NDVI Coefficient", "NDBI Coefficient", "Built-up Density Coefficient"])
             for tab, map_path in zip(tabs, web_maps):
                 with tab:
                     st.image(str(map_path), caption=str(map_path.relative_to(PROJECT_ROOT)), use_container_width=True)
+        if web_maps:
+            st.markdown("---")
+            st.subheader("Coefficient Map Grid")
+            map_titles = ["Local R2", "NDVI Coefficient", "NDBI Coefficient", "Built-up Density Coefficient"]
+            rows = [list(zip(web_maps, map_titles))[i:i + 2] for i in range(0, len(web_maps), 2)]
+            for row in rows:
+                cols = st.columns(2, gap="medium")
+                for col, (map_path, title) in zip(cols, row):
+                    with col:
+                        st.markdown(f"**{title}**")
+                        st.image(str(map_path), caption=str(map_path.relative_to(PROJECT_ROOT)), use_container_width=True)
+
         st.markdown("---")
         st.subheader("GWR Diagnostic Tables")
         for label, path in web_tables.items():
